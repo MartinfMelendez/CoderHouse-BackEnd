@@ -20,7 +20,7 @@ Crear el archivo .env tomando como referencia .env.example.
 
 Luego iniciar el servidor:
 
-npm start
+npm run dev
 
 El servidor estará disponible en:
 
