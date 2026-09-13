@@ -137,10 +137,10 @@ export function getServiceById(id) {
 
 export function addService(name, description, duration, price, category, available) {
     try {
-        if(!name || !description || !duration || !price || !category || available === undefined){
+        if(!name || !description || duration === undefined || !category || available === undefined){
             throw new Error("Todos los campos son obligatorios")
         }
-        if(!price || isNaN(price) || price <= 0){
+        if(price === undefined ||  isNaN(price) || price <= 0){
             throw new Error("El precio debe ser un número positivo")
         }
 const newService = new Service(name, description, duration, price, category, available)
@@ -159,12 +159,12 @@ const service = services.find(service => service.id == id);
         if(!service){
             throw new Error("Servicio no encontrado")
         }
-        service.name = name;
-        service.description = description;
-        service.duration = duration;
-        service.price = price;
-        service.category = category;
-        service.available = available;
+        service.name = name ?? service.name;
+        service.description = description ?? service.description;
+        service.duration = duration ?? service.duration;
+        service.price = price ?? service.price;
+        service.category = category ?? service.category;
+        service.available = available ?? service.available;
         return service;
     }
     catch(error){
