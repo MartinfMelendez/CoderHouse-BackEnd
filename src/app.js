@@ -28,8 +28,8 @@ app.post("/api/services", (req, res) => {
 
 app.put("/api/services/:id", (req, res) => {
     const { id } = req.params
-    const { name, description, duration, price, category, available } = req.body
-    const updatedService = updateService(id, name, description, duration, price, category, available)
+    const data = {...req.body}
+    const updatedService = updateService(id, data)
     res.status(200).json({ UpdatedService: updatedService })
 })
 

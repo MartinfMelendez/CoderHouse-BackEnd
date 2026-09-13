@@ -140,7 +140,7 @@ export function addService(name, description, duration, price, category, availab
         if(!name || !description || duration === undefined || !category || available === undefined){
             throw new Error("Todos los campos son obligatorios")
         }
-        if(price === undefined ||  isNaN(price) || price <= 0){
+        if(price === undefined ||  isNaN(price) || price < 0){
             throw new Error("El precio debe ser un número positivo")
         }
 const newService = new Service(name, description, duration, price, category, available)
@@ -153,19 +153,14 @@ const newService = new Service(name, description, duration, price, category, ava
     }
 }
 
-export function updateService(id,name, description, duration, price, category, available) {
+export function updateService(id,data) {
     try{
-const service = services.find(service => service.id == id);
-        if(!service){
+const index = services.findIndex(service => service.id == id);
+        if(index === -1){
             throw new Error("Servicio no encontrado")
         }
-        service.name = name ?? service.name;
-        service.description = description ?? service.description;
-        service.duration = duration ?? service.duration;
-        service.price = price ?? service.price;
-        service.category = category ?? service.category;
-        service.available = available ?? service.available;
-        return service;
+services[index] = {...services[index], ...data}
+        return services[index];
     }
     catch(error){
         return error.message
