@@ -1,102 +1,165 @@
-CoderHouse - Backend
+CoderHouse BackEnd
 
-API REST desarrollada con Node.js y Express para gestionar servicios.
+API REST desarrollada con Node.js y Express como parte del curso de Backend de Coderhouse.
 
-🚀 Instalación
+El proyecto implementa un CRUD para la gestión de servicios, utilizando actualmente un array en memoria como fuente de datos.
 
-Clonar el repositorio:
+Tecnologías utilizadas
 
-git clone https://github.com/MartinfMelendez/CoderHouse-BackEnd.git
+-Node.js -Express -JavaScript -dotenv -Nodemon
 
-Ingresar al proyecto:
+Descripción del recurso
 
-cd CoderHouse-BackEnd
+El recurso principal de la API es Service (Servicio).
 
-Instalar las dependencias:
+Cada servicio contiene los siguientes campos:
 
-npm install
+Campo Tipo Descripción id Number Identificador único del servicio name String Nombre del servicio description String Descripción del servicio duration Number Duración del servicio en minutos price Number Precio del servicio category String Categoría a la que pertenece available Boolean Indica si el servicio está disponible Ejemplo de un servicio { "id": 1, "name": "Corte de cabello", "description": "Corte de cabello clásico o moderno.", "duration": 45, "price": 8500, "category": "Belleza", "available": true }
 
-Crear el archivo .env tomando como referencia .env.example.
+Instalación
 
-Luego iniciar el servidor:
+Para ejecutar el proyecto localmente es necesario tener instalado Node.js.
 
-npm run dev
+    Clonar el repositorio git clone https://github.com/MartinfMelendez/CoderHouse-BackEnd.git
+
+    Ingresar al proyecto cd CoderHouse-BackEnd
+
+    Instalar las dependencias npm install
+
+    Configurar las variables de entorno
+
+Crear un archivo .env en la raíz del proyecto.
+
+El proyecto utiliza la variable de entorno PORT para definir el puerto en el que se ejecutará el servidor.
+
+Ejemplo:
+
+PORT=8080
+
+    Ejecutar el servidor npm run dev
 
 El servidor estará disponible en:
 
 http://localhost:8080
 
-El puerto puede variar según la configuración del archivo .env.
+Si se utiliza otro valor para PORT, se deberá utilizar ese puerto en las peticiones.
 
-📌 Endpoints
+Variables de entorno
 
-La API utiliza como ruta base:
+Actualmente el proyecto utiliza la siguiente variable de entorno:
+
+Variable Descripción Ejemplo PORT Puerto en el que se ejecutará el servidor 8080
+
+Ejemplo del archivo .env:
+
+PORT=8080
+
+Endpoints
+
+La API utiliza el recurso:
 
 /api/services
-1. Obtener todos los servicios
 
-GET
+Método Endpoint Descripción GET /api/services Obtener todos los servicios GET /api/services/:id Obtener un servicio por ID POST /api/services Crear un nuevo servicio PUT /api/services/:id Actualizar un servicio DELETE /api/services/:id Eliminar un servicio GET - Obtener todos los servicios Request GET /api/services
 
-GET http://localhost:8080/api/services
+Response { "Services": [ { "id": 1, "name": "Corte de cabello", "description": "Corte de cabello clásico o moderno.", "duration": 45, "price": 8500, "category": "Belleza", "available": true }, { "id": 2, "name": "Masaje relajante", "description": "Masaje corporal para aliviar tensión y estrés.", "duration": 60, "price": 15000, "category": "Bienestar", "available": true } ] }
 
-Devuelve todos los servicios registrados.
+GET - Obtener un servicio por ID Request GET /api/services/1
 
-2. Obtener un servicio por ID
+Response { "Service": { "id": 1, "name": "Corte de cabello", "description": "Corte de cabello clásico o moderno.", "duration": 45, "price": 8500, "category": "Belleza", "available": true } }
 
-GET
+Si el servicio no existe, la API devuelve el mensaje:
 
-GET http://localhost:8080/api/services/:id
+Servicio no encontrado
 
-Ejemplo:
+POST - Crear un servicio Request POST /api/services Content-Type: application/json
 
-GET http://localhost:8080/api/services/1
+Body { "name": "Clase de guitarra", "description": "Clase particular de guitarra para principiantes.", "duration": 60, "price": 10000, "category": "Música", "available": true }
 
-Reemplazar 1 por el ID del servicio que se quiera consultar.
+Response { "NewService": { "id": 11, "name": "Clase de guitarra", "description": "Clase particular de guitarra para principiantes.", "duration": 60, "price": 10000, "category": "Música", "available": true } }
 
-3. Crear un nuevo servicio
+El id se genera automáticamente.
 
-POST
+Validaciones
 
-POST http://localhost:8080/api/services
+Para crear un servicio se deben enviar los campos correspondientes al recurso.
 
-Enviar un JSON en el Body:
+Actualmente se valida que:
 
-{
-    "name": "Servicio de prueba",
-    "description": "Descripción del servicio",
-    "duration": 60,
-    "price": 15000,
-    "category": "General",
-    "available": true
-}
-4. Actualizar un servicio
+name esté presente. description esté presente. duration esté presente. price esté presente y sea un número positivo. category esté presente. available esté presente.
 
-PUT
+Un valor de 0 para duration es considerado un valor presente porque se utiliza una validación mediante === undefined. En el caso de price, actualmente se requiere un valor mayor que 0.
 
-PUT http://localhost:8080/api/services/:id
+PUT - Actualizar un servicio Request PUT /api/services/1 Content-Type: application/json
 
-Ejemplo:
+La actualización permite enviar únicamente los campos que se desean modificar.
 
-PUT http://localhost:8080/api/services/1
+Por ejemplo:
 
-Body:
+{ "name": "Corte premium" }
 
-{
-    "name": "Servicio actualizado",
-    "description": "Nueva descripción",
-    "duration": 90,
-    "price": 20000,
-    "category": "General",
-    "available": true
-}
-5. Eliminar un servicio
+Los demás campos del servicio se conservan.
 
-DELETE
+Ejemplo de actualización parcial
 
-DELETE http://localhost:8080/api/services/:id
+Servicio original:
 
-Ejemplo:
+{ "id": 1, "name": "Corte de cabello", "description": "Corte de cabello clásico o moderno.", "duration": 45, "price": 8500, "category": "Belleza", "available": true }
 
-DELETE http://localhost:8080/api/services/1
+Petición:
 
-Reemplazar 1 por el ID del servicio que se quiera eliminar.
+{ "name": "Corte premium" }
+
+Resultado:
+
+{ "id": 1, "name": "Corte premium", "description": "Corte de cabello clásico o moderno.", "duration": 45, "price": 8500, "category": "Belleza", "available": true }
+
+La actualización se realiza conservando el objeto existente y sobrescribiendo únicamente las propiedades recibidas:
+
+services[index] = { ...services[index], ...data }
+
+Actualizar varios campos
+
+También se pueden modificar varios campos en una misma petición:
+
+{ "name": "Corte premium", "price": 12000, "available": false }
+
+El resto de las propiedades conserva su valor anterior.
+
+Nota: aunque conceptualmente una actualización parcial suele asociarse al método PATCH, en este proyecto se utiliza PUT para realizar la actualización de los campos enviados.
+
+DELETE - Eliminar un servicio Request DELETE /api/services/1
+
+Response { "DeletedService": { "id": 1, "name": "Corte de cabello", "description": "Corte de cabello clásico o moderno.", "duration": 45, "price": 8500, "category": "Belleza", "available": true } }
+
+Si el servicio no existe:
+
+Servicio no encontrado
+
+Ejemplos con cURL Obtener todos los servicios curl http://localhost:8080/api/services
+
+Obtener un servicio curl http://localhost:8080/api/services/1
+
+Crear un servicio curl -X POST http://localhost:8080/api/services
+-H "Content-Type: application/json"
+-d '{ "name": "Clase de guitarra", "description": "Clase particular de guitarra para principiantes.", "duration": 60, "price": 10000, "category": "Música", "available": true }'
+
+Actualizar un servicio curl -X PUT http://localhost:8080/api/services/1
+-H "Content-Type: application/json"
+-d '{ "name": "Corte premium", "price": 12000, "available": false }'
+
+Eliminar un servicio curl -X DELETE http://localhost:8080/api/services/1
+
+La utilización de un array permite implementar y probar las operaciones CRUD antes de incorporar una base de datos persistente.
+
+Estructura del proyecto CoderHouse-BackEnd/ │ ├── src/ │ ├── config/ │ │ └── env.config.js │ │ │ ├── managers/ │ │ └── ServiceManager.js │ │ │ └── app.js │ ├── .env.example ├── .gitignore ├── package.json ├── package-lock.json └── README.md
+
+Principales archivos src/app.js: configuración del servidor Express y definición de los endpoints. src/managers/ServiceManager.js: contiene el array de servicios, la clase Service y la lógica CRUD. src/config/env.config.js: configuración de las variables de entorno. .env.example: ejemplo de las variables de entorno necesarias. package.json: dependencias y scripts del proyecto. Scripts disponibles Desarrollo npm run dev
+
+Ejecuta el servidor en modo desarrollo.
+
+Autor
+
+Martin F. Melendez
+
+Proyecto realizado para el curso de Backend de Coderhouse.
