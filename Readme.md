@@ -80,8 +80,6 @@ Ejemplo del archivo .env:
 PORT=8080
 
 
-El archivo .env no debe contenerse en el repositorio si incluye información sensible. Para compartir la estructura de las variables necesarias se puede utilizar .env.example.
-
 Endpoints
 
 La API utiliza el recurso:
