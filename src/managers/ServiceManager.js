@@ -150,16 +150,18 @@ const newService = new Service(name, description, duration, price, category, ava
     }
     catch(error){
         return error.message
+        
     }
 }
 
-export function updateService(id,data) {
+export function updateService(serviceId,data) {
     try{
-const index = services.findIndex(service => service.id == id);
+const index = services.findIndex(service => service.id == serviceId);
         if(index === -1){
             throw new Error("Servicio no encontrado")
         }
-services[index] = {...services[index], ...data}
+        const {id, ...newData} = data
+services[index] = {...services[index], ...newData}
         return services[index];
     }
     catch(error){
