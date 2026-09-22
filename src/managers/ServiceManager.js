@@ -107,7 +107,6 @@ class Service {
 
 }
 
-
 export function getAllService() {
     try {
         if (services.length === 0) {
@@ -137,46 +136,43 @@ export function getServiceById(id) {
 
 export function addService(name, description, duration, price, category, available) {
     try {
-        if(!name || !description || !duration || !price || !category || available === undefined){
+        if (!name || !description || duration === undefined || price === undefined || !category || available === undefined) {
             throw new Error("Todos los campos son obligatorios")
         }
-        if(!price || isNaN(price) || price <= 0){
+        if ( typeof price !== "number" || price <= 0) {
             throw new Error("El precio debe ser un número positivo")
         }
-const newService = new Service(name, description, duration, price, category, available)
+        const newService = new Service(name, description, duration, price, category, available)
         services.push(newService)
         return newService
 
     }
-    catch(error){
+    catch (error) {
         return error.message
     }
 }
 
-export function updateService(id,name, description, duration, price, category, available) {
-    try{
-const service = services.find(service => service.id == id);
-        if(!service){
+export function updateService(serviceId,data) {
+    try {
+        const index = services.findIndex(service => service.id == serviceId);
+        if (index === -1) {
             throw new Error("Servicio no encontrado")
         }
-        service.name = name;
-        service.description = description;
-        service.duration = duration;
-        service.price = price;
-        service.category = category;
-        service.available = available;
-        return service;
+
+        const {id, ...newData} = data
+        services[index]={...services[index], ...newData}
+        return services[index];
     }
-    catch(error){
+    catch (error) {
         return error.message
     }
 }
 
 export function deleteService(id) {
     try {
-        const index =  services.findIndex(service => service.id == id);
-        if(index === -1){
-throw new Error("Servicio no encontrado")
+        const index = services.findIndex(service => service.id == id);
+        if (index === -1) {
+            throw new Error("Servicio no encontrado")
         }
         const serviceDeleted = services.splice(index, 1);
         return serviceDeleted[0]
