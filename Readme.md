@@ -5,10 +5,13 @@ API REST desarrollada con Node.js y Express como parte del curso de Backend de C
 El proyecto implementa un CRUD para la gestión de servicios, utilizando actualmente un array en memoria como fuente de datos.
 
 Tecnologías utilizadas
-Node.js
-Express
-JavaScript
-dotenv
+
+-Node.js
+-Express
+-JavaScript
+-dotenv
+-Nodemon
+
 Descripción del recurso
 
 El recurso principal de la API es Service (Servicio).
