@@ -1,3 +1,5 @@
+import fs from 'fs/promises'
+
 const services = [
     {
         id: 1,
@@ -92,6 +94,8 @@ const services = [
 ];
 
 
+
+
 class Service {
     static id = services.length + 1;
 
@@ -105,6 +109,18 @@ class Service {
         this.available = available;
     }
 
+}
+
+class managerServices{
+    constructor(){}
+
+    async getAllService(){
+        try {
+            
+        } catch (error) {
+            return error.message
+        }
+    }
 }
 
 export function getAllService() {

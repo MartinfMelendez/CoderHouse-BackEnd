@@ -6,7 +6,7 @@ import router from "./routers/routers.js"
 dotenv.config()
 
 const app = express()
-const PORT  = env.PORT  
+const PORT  = env.PORT
 
 app.use(express.json())
 
